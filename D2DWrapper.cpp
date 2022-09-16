@@ -1,0 +1,74 @@
+#include "pch.h"
+#include "D2DWrapper.h"
+
+#pragma comment(lib, "D2d1.lib")
+
+D2DWrapper::~D2DWrapper()
+{
+	Uninit();
+	m_pFactory = nullptr;
+}
+
+bool D2DWrapper::Init(HWND hWnd)
+{
+	Uninit();
+
+	if (!m_pFactory) {
+		HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &m_pFactory);
+		assert(SUCCEEDED(hr));
+		if (FAILED(hr))
+			return false;
+	}
+
+	RECT rc;
+	GetClientRect(hWnd, &rc);
+
+	D2D1_SIZE_U size = D2D1::SizeU(rc.right, rc.bottom);
+	HRESULT hr = m_pFactory->CreateHwndRenderTarget(D2D1::RenderTargetProperties(), D2D1::HwndRenderTargetProperties(hWnd, size), m_pRenderTarget.Assign());
+	assert(SUCCEEDED(hr));
+	if (FAILED(hr))
+		return false;
+
+	const D2D1_COLOR_F color = D2D1::ColorF(0, 0, 1.0f);
+	hr = m_pRenderTarget->CreateSolidColorBrush(color, m_pSolidBrush.Assign());
+	assert(SUCCEEDED(hr));
+	if (FAILED(hr))
+		return false;
+
+	m_pRenderTarget->SetAntialiasMode(D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
+	return true;
+}
+
+void D2DWrapper::Uninit()
+{
+	m_pRenderTarget = nullptr;
+	m_pSolidBrush = nullptr;
+}
+
+void D2DWrapper::Render(HWND hWnd)
+{
+	RECT rc;
+	GetClientRect(hWnd, &rc);
+
+	if (m_pRenderTarget) {
+		D2D1_SIZE_F size = m_pRenderTarget->GetSize();
+		if (rc.right != (LONG)size.width || rc.bottom != (LONG)size.height)
+			Uninit();
+	}
+
+	if (!m_pRenderTarget) {
+		if (!Init(hWnd))
+			return;
+	}
+
+	float x = (float)rc.right / 2;
+	float y = (float)rc.bottom / 2;
+	float radius = 100;
+	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius);
+
+	m_pRenderTarget->BeginDraw();
+	m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::SpringGreen));
+	m_pRenderTarget->FillEllipse(ellipse, m_pSolidBrush);
+	if (D2DERR_RECREATE_TARGET == m_pRenderTarget->EndDraw())
+		Uninit();
+}
