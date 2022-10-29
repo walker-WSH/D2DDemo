@@ -35,7 +35,12 @@ bool D2DWrapper::Init(HWND hWnd)
 	if (FAILED(hr))
 		return false;
 
+	// »æÍ¼¿¹¾â³Ý
 	m_pRenderTarget->SetAntialiasMode(D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
+
+	// ÎÄ±¾¿¹¾â³Ý
+	m_pRenderTarget->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_CLEARTYPE);
+
 	return true;
 }
 
@@ -63,12 +68,19 @@ void D2DWrapper::Render(HWND hWnd)
 
 	float x = (float)rc.right / 2;
 	float y = (float)rc.bottom / 2;
-	float radius = 100;
+	float radius = 200;
 	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius);
 
+	// ¿ªÊ¼äÖÈ¾
 	m_pRenderTarget->BeginDraw();
-	m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::SpringGreen));
+
+	// ±³¾°É«Çå¿Õ
+	m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Yellow));
+
+	// Ìî³äÍÖÔ²
 	m_pRenderTarget->FillEllipse(ellipse, m_pSolidBrush);
+
+	// ½áÊøäÖÈ¾ check device error and call reinitialize
 	if (D2DERR_RECREATE_TARGET == m_pRenderTarget->EndDraw())
 		Uninit();
 }
