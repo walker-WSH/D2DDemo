@@ -36,7 +36,7 @@ bool D2DWrapper::Init(HWND hWnd)
 	m_pTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);
 	// 文本换行策略 是否换行 怎么换行
 	m_pTextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);
-	m_pTextFormat->SetReadingDirection(DWRITE_READING_DIRECTION_LEFT_TO_RIGHT);
+	//m_pTextFormat->SetTrimming();
 
 	RECT rc;
 	GetClientRect(hWnd, &rc);
