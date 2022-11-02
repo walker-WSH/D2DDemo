@@ -23,7 +23,7 @@ bool D2DWrapper::Init(HWND hWnd)
 	if (FAILED(hr))
 		return false;
 
-	hr = m_pDWriteFactory->CreateTextFormat(msc_fontName, NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, msc_fontSize,
+	hr = m_pDWriteFactory->CreateTextFormat(msc_fontName, NULL, DWRITE_FONT_WEIGHT_BOLD, DWRITE_FONT_STYLE_ITALIC, DWRITE_FONT_STRETCH_NORMAL, msc_fontSize,
 						L"", //locale
 						&m_pTextFormat);
 	assert(SUCCEEDED(hr));

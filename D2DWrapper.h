@@ -7,20 +7,15 @@
 #include "ComPtr.hpp"
 
 /*
-加粗
-斜体
-下划线
-删除线
-外轮廓
-
 https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Samples/multimedia/Direct2D/TextAnimationSample
 https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Samples/multimedia/Direct2D/SimpleDirect2DApplication
 https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Samples/multimedia/Direct2D/Direct2DHelloWorld
 https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nn-dwrite-idwritetextformat
+https://learn.microsoft.com/zh-cn/windows/win32/api/dwrite/nn-dwrite-idwritetextlayout
 */
 
 static const WCHAR msc_fontName[] = L"Arial";
-static const FLOAT msc_fontSize = 100;
+static const FLOAT msc_fontSize = 50;
 static const WCHAR sc_helloWorld[] = L"Hello, World! 大家好吗？";
 
 class D2DWrapper {
