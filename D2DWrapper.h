@@ -2,12 +2,12 @@
 #include <mutex>
 #include <d2d1.h>
 #include <d2d1_1.h>
+#include <d2d1helper.h>
+#include <dwrite.h>
 #include "ComPtr.hpp"
 
 /*
 抗锯齿
-字体选择 字体大小 
-颜色
 垂直居中 水平居中
 加粗
 斜体
@@ -20,6 +20,10 @@ https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Sampl
 https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Samples/multimedia/Direct2D/SimpleDirect2DApplication
 https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Samples/multimedia/Direct2D/Direct2DHelloWorld
 */
+
+static const WCHAR msc_fontName[] = L"Arial";
+static const FLOAT msc_fontSize = 100;
+static const WCHAR sc_helloWorld[] = L"Hello, World! 大家好吗？";
 
 class D2DWrapper {
 public:
@@ -34,4 +38,8 @@ private:
 	ComPtr<ID2D1Factory> m_pFactory = nullptr;
 	ComPtr<ID2D1HwndRenderTarget> m_pRenderTarget = nullptr;
 	ComPtr<ID2D1SolidColorBrush> m_pSolidBrush = nullptr;
+
+	ComPtr<IDWriteFactory> m_pDWriteFactory = nullptr;
+	ComPtr<IDWriteTextFormat> m_pTextFormat = nullptr;
+	ComPtr<ID2D1SolidColorBrush> m_pTextBrush = nullptr;
 };

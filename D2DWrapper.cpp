@@ -1,35 +1,54 @@
 #include "pch.h"
 #include "D2DWrapper.h"
 
-#pragma comment(lib, "D2d1.lib")
+#pragma comment(lib, "d2d1.lib")
+#pragma comment(lib, "dwrite.lib")
 
 D2DWrapper::~D2DWrapper()
 {
 	Uninit();
-	m_pFactory = nullptr;
 }
 
 bool D2DWrapper::Init(HWND hWnd)
 {
 	Uninit();
 
-	if (!m_pFactory) {
-		HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &m_pFactory);
-		assert(SUCCEEDED(hr));
-		if (FAILED(hr))
-			return false;
-	}
+	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &m_pFactory);
+	assert(SUCCEEDED(hr));
+	if (FAILED(hr))
+		return false;
+
+	hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), reinterpret_cast<IUnknown **>(&m_pDWriteFactory));
+	assert(SUCCEEDED(hr));
+	if (FAILED(hr))
+		return false;
+
+	hr = m_pDWriteFactory->CreateTextFormat(msc_fontName, NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, msc_fontSize,
+						L"", //locale
+						&m_pTextFormat);
+	assert(SUCCEEDED(hr));
+	if (FAILED(hr))
+		return false;
+
+	// Center the text horizontally and vertically.
+	m_pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	m_pTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 
 	RECT rc;
 	GetClientRect(hWnd, &rc);
 
 	D2D1_SIZE_U size = D2D1::SizeU(rc.right, rc.bottom);
-	HRESULT hr = m_pFactory->CreateHwndRenderTarget(D2D1::RenderTargetProperties(), D2D1::HwndRenderTargetProperties(hWnd, size), m_pRenderTarget.Assign());
+	hr = m_pFactory->CreateHwndRenderTarget(D2D1::RenderTargetProperties(), D2D1::HwndRenderTargetProperties(hWnd, size), m_pRenderTarget.Assign());
 	assert(SUCCEEDED(hr));
 	if (FAILED(hr))
 		return false;
 
 	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 0, 1.0f), m_pSolidBrush.Assign());
+	assert(SUCCEEDED(hr));
+	if (FAILED(hr))
+		return false;
+
+	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 0, 0), m_pTextBrush.Assign());
 	assert(SUCCEEDED(hr));
 	if (FAILED(hr))
 		return false;
@@ -47,6 +66,11 @@ void D2DWrapper::Uninit()
 {
 	m_pRenderTarget = nullptr;
 	m_pSolidBrush = nullptr;
+	m_pFactory = nullptr;
+
+	m_pTextFormat = nullptr;
+	m_pTextBrush = nullptr;
+	m_pDWriteFactory = nullptr;
 }
 
 void D2DWrapper::Render(HWND hWnd)
@@ -80,10 +104,14 @@ void D2DWrapper::Render(HWND hWnd)
 	m_pRenderTarget->BeginDraw();
 
 	// ±³¾°É«Çå¿Õ
-	m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Gray));
+	m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
 
 	// Ìî³äÍÖÔ²
 	m_pRenderTarget->FillEllipse(ellipse, m_pSolidBrush);
+
+	// äÖÈ¾ÎÄ±¾
+	D2D1_SIZE_F size = m_pRenderTarget->GetSize();
+	m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, size.width, size.height), m_pTextBrush);
 
 	// ½áÊøäÖÈ¾ check device error and call reinitialize
 	if (D2DERR_RECREATE_TARGET == m_pRenderTarget->EndDraw())
