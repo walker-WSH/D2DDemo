@@ -31,8 +31,8 @@ private:
 	ComPtr<ID2D1Factory> m_pFactory = nullptr;
 	ComPtr<ID2D1HwndRenderTarget> m_pRenderTarget = nullptr;
 	ComPtr<ID2D1SolidColorBrush> m_pSolidBrush = nullptr;
+	ComPtr<ID2D1SolidColorBrush> m_pBlackBrush = nullptr;
 
 	ComPtr<IDWriteFactory> m_pDWriteFactory = nullptr;
 	ComPtr<IDWriteTextFormat> m_pTextFormat = nullptr;
-	ComPtr<ID2D1SolidColorBrush> m_pTextBrush = nullptr;
 };

@@ -35,7 +35,7 @@ bool D2DWrapper::Init(HWND hWnd)
 	// 文本垂直对齐
 	m_pTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);
 	// 文本换行策略 是否换行 怎么换行
-	m_pTextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);
+	//m_pTextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);
 	//m_pTextFormat->SetTrimming();
 
 	RECT rc;
@@ -47,12 +47,7 @@ bool D2DWrapper::Init(HWND hWnd)
 	if (FAILED(hr))
 		return false;
 
-	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 0, 1.0f), m_pSolidBrush.Assign());
-	assert(SUCCEEDED(hr));
-	if (FAILED(hr))
-		return false;
-
-	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 0, 0), m_pTextBrush.Assign());
+	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 0, 0), m_pBlackBrush.Assign());
 	assert(SUCCEEDED(hr));
 	if (FAILED(hr))
 		return false;
@@ -68,12 +63,11 @@ bool D2DWrapper::Init(HWND hWnd)
 
 void D2DWrapper::Uninit()
 {
+	m_pBlackBrush = nullptr;
 	m_pRenderTarget = nullptr;
-	m_pSolidBrush = nullptr;
 	m_pFactory = nullptr;
 
 	m_pTextFormat = nullptr;
-	m_pTextBrush = nullptr;
 	m_pDWriteFactory = nullptr;
 }
 
@@ -111,11 +105,14 @@ void D2DWrapper::Render(HWND hWnd)
 	m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
 
 	// 填充椭圆
-	m_pRenderTarget->FillEllipse(ellipse, m_pSolidBrush);
+	m_pRenderTarget->FillEllipse(ellipse, m_pBlackBrush);
+
+	// 画圆
+	m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(150.0f, 150.0f), 100.0f, 100.0f), m_pBlackBrush, 3.0);
 
 	// 渲染文本
 	D2D1_SIZE_F size = m_pRenderTarget->GetSize();
-	m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, size.width, size.height), m_pTextBrush);
+	m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, size.width, size.height), m_pBlackBrush);
 
 	// 结束渲染 check device error and call reinitialize
 	if (D2DERR_RECREATE_TARGET == m_pRenderTarget->EndDraw())
