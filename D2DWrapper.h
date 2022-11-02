@@ -16,7 +16,7 @@ https://learn.microsoft.com/zh-cn/windows/win32/api/dwrite/nn-dwrite-idwritetext
 
 static const WCHAR msc_fontName[] = L"Arial";
 static const FLOAT msc_fontSize = 50;
-static const WCHAR sc_helloWorld[] = L"Hello, World! 大家好吗？";
+static const WCHAR sc_helloWorld[] = L"Hello, World! 大家好吗？ how are you? good morningggggg";
 
 class D2DWrapper {
 public:
@@ -30,7 +30,7 @@ public:
 private:
 	ComPtr<ID2D1Factory> m_pFactory = nullptr;
 	ComPtr<ID2D1HwndRenderTarget> m_pRenderTarget = nullptr;
-	ComPtr<ID2D1SolidColorBrush> m_pSolidBrush = nullptr;
+	ComPtr<ID2D1SolidColorBrush> m_pRedBrush = nullptr;
 	ComPtr<ID2D1SolidColorBrush> m_pBlackBrush = nullptr;
 
 	ComPtr<IDWriteFactory> m_pDWriteFactory = nullptr;

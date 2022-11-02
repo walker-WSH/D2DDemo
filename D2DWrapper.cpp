@@ -36,7 +36,7 @@ bool D2DWrapper::Init(HWND hWnd)
 	m_pTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);
 
 	// ÎÄ±¾»»ÐÐ²ßÂÔ ÊÇ·ñ»»ÐÐ ÔõÃ´»»ÐÐ
-	//m_pTextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);
+	m_pTextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_WHOLE_WORD);
 	//m_pTextFormat->SetTrimming();
 
 	RECT rc;
@@ -53,6 +53,11 @@ bool D2DWrapper::Init(HWND hWnd)
 	if (FAILED(hr))
 		return false;
 
+	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(1.0, 0, 0), m_pRedBrush.Assign());
+	assert(SUCCEEDED(hr));
+	if (FAILED(hr))
+		return false;
+
 	// »æÍ¼¿¹¾â³Ý
 	m_pRenderTarget->SetAntialiasMode(D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
 
@@ -64,6 +69,7 @@ bool D2DWrapper::Init(HWND hWnd)
 
 void D2DWrapper::Uninit()
 {
+	m_pRedBrush = nullptr;
 	m_pBlackBrush = nullptr;
 	m_pRenderTarget = nullptr;
 	m_pFactory = nullptr;
@@ -109,11 +115,11 @@ void D2DWrapper::Render(HWND hWnd)
 	m_pRenderTarget->FillEllipse(ellipse, m_pBlackBrush);
 
 	// »­Ô²
-	m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(150.0f, 150.0f), 100.0f, 100.0f), m_pBlackBrush, 3.0);
+	m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(150.0f, 150.0f), 100.0f, 100.0f), m_pRedBrush, 3.0);
 
 	// äÖÈ¾ÎÄ±¾
 	D2D1_SIZE_F size = m_pRenderTarget->GetSize();
-	m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, size.width, size.height), m_pBlackBrush);
+	m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, size.width, size.height), m_pRedBrush);
 
 	// ½áÊøäÖÈ¾ check device error and call reinitialize
 	if (D2DERR_RECREATE_TARGET == m_pRenderTarget->EndDraw())
