@@ -29,8 +29,7 @@ bool D2DWrapper::Init(HWND hWnd)
 	if (FAILED(hr))
 		return false;
 
-	const D2D1_COLOR_F color = D2D1::ColorF(0, 0, 1.0f);
-	hr = m_pRenderTarget->CreateSolidColorBrush(color, m_pSolidBrush.Assign());
+	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 0, 1.0f), m_pSolidBrush.Assign());
 	assert(SUCCEEDED(hr));
 	if (FAILED(hr))
 		return false;
