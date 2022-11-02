@@ -57,6 +57,7 @@ BEGIN_MESSAGE_MAP(CD2DDemoDlg, CDialogEx)
 ON_WM_SYSCOMMAND()
 ON_WM_PAINT()
 ON_WM_QUERYDRAGICON()
+ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 // CD2DDemoDlg 消息处理程序
@@ -120,4 +121,12 @@ void CD2DDemoDlg::OnPaint()
 HCURSOR CD2DDemoDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
+}
+
+void CD2DDemoDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+
+	// TODO: 在此处添加消息处理程序代码
+	RedrawWindow();
 }

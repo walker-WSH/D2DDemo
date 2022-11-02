@@ -75,7 +75,7 @@ void D2DWrapper::Render(HWND hWnd)
 	m_pRenderTarget->BeginDraw();
 
 	// ±³¾°É«Çå¿Õ
-	m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Yellow));
+	m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Gray));
 
 	// Ìî³äÍÖÔ²
 	m_pRenderTarget->FillEllipse(ellipse, m_pSolidBrush);

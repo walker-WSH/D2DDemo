@@ -33,4 +33,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	D2DWrapper m_D2DRender;
+
+public:
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
