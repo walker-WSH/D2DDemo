@@ -56,8 +56,14 @@ void D2DWrapper::Render(HWND hWnd)
 
 	if (m_pRenderTarget) {
 		D2D1_SIZE_F size = m_pRenderTarget->GetSize();
-		if (rc.right != (LONG)size.width || rc.bottom != (LONG)size.height)
-			Uninit();
+		if (rc.right != (LONG)size.width || rc.bottom != (LONG)size.height) {
+			D2D1_SIZE_U size;
+			size.width = rc.right;
+			size.height = rc.bottom;
+
+			if (FAILED(m_pRenderTarget->Resize(size)))
+				Uninit();
+		}
 	}
 
 	if (!m_pRenderTarget) {
