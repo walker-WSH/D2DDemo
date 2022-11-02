@@ -34,6 +34,7 @@ bool D2DWrapper::Init(HWND hWnd)
 	m_pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 	// 文本垂直对齐
 	m_pTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);
+
 	// 文本换行策略 是否换行 怎么换行
 	//m_pTextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);
 	//m_pTextFormat->SetTrimming();
