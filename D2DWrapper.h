@@ -7,7 +7,6 @@
 #include "ComPtr.hpp"
 
 /*
-抗锯齿
 加粗
 斜体
 下划线
