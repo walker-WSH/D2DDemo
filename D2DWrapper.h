@@ -8,7 +8,6 @@
 
 /*
 抗锯齿
-垂直居中 水平居中
 加粗
 斜体
 下划线
@@ -19,6 +18,7 @@
 https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Samples/multimedia/Direct2D/TextAnimationSample
 https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Samples/multimedia/Direct2D/SimpleDirect2DApplication
 https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Samples/multimedia/Direct2D/Direct2DHelloWorld
+https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nn-dwrite-idwritetextformat
 */
 
 static const WCHAR msc_fontName[] = L"Arial";
