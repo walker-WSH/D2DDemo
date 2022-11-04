@@ -21,8 +21,9 @@ https://learn.microsoft.com/zh-cn/windows/win32/api/dwrite/nn-dwrite-idwritetext
 自动换行/不换行截断设置
 下划线(支持只针对指定字符)
 删除线(支持只针对指定字符)
-渐变色
 旋转
+3D立体字
+渐变色 https://www.pianshen.com/article/76621683515/
 外轮廓(文字描边)https://codeantenna.com/a/bsKMXrctOX
 */
 
