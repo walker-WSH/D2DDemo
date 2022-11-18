@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "D2DWrapper.h"
+#include <assert.h>
 
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "dwrite.lib")
