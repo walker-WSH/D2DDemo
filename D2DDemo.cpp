@@ -11,15 +11,11 @@
 #define new DEBUG_NEW
 #endif
 
-
 // CD2DDemoApp
 
 BEGIN_MESSAGE_MAP(CD2DDemoApp, CWinApp)
-	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
+ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
-
-
-// CD2DDemoApp 构造
 
 CD2DDemoApp::CD2DDemoApp()
 {
@@ -30,11 +26,9 @@ CD2DDemoApp::CD2DDemoApp()
 	// 将所有重要的初始化放置在 InitInstance 中
 }
 
-
 // 唯一的 CD2DDemoApp 对象
 
 CD2DDemoApp theApp;
-
 
 // CD2DDemoApp 初始化
 
@@ -51,7 +45,6 @@ BOOL CD2DDemoApp::InitInstance()
 	InitCommonControlsEx(&InitCtrls);
 
 	CWinApp::InitInstance();
-
 
 	AfxEnableControlContainer();
 
@@ -77,25 +70,19 @@ BOOL CD2DDemoApp::InitInstance()
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	CoUninitialize();
-	if (nResponse == IDOK)
-	{
+	if (nResponse == IDOK) {
 		// TODO: 在此放置处理何时用
 		//  “确定”来关闭对话框的代码
-	}
-	else if (nResponse == IDCANCEL)
-	{
+	} else if (nResponse == IDCANCEL) {
 		// TODO: 在此放置处理何时用
 		//  “取消”来关闭对话框的代码
-	}
-	else if (nResponse == -1)
-	{
+	} else if (nResponse == -1) {
 		TRACE(traceAppMsg, 0, "警告: 对话框创建失败，应用程序将意外终止。\n");
 		TRACE(traceAppMsg, 0, "警告: 如果您在对话框上使用 MFC 控件，则无法 #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS。\n");
 	}
 
 	// 删除上面创建的 shell 管理器。
-	if (pShellManager != nullptr)
-	{
+	if (pShellManager != nullptr) {
 		delete pShellManager;
 	}
 
@@ -107,4 +94,3 @@ BOOL CD2DDemoApp::InitInstance()
 	//  而不是启动应用程序的消息泵。
 	return FALSE;
 }
-

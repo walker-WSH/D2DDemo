@@ -58,6 +58,7 @@ ON_WM_SYSCOMMAND()
 ON_WM_PAINT()
 ON_WM_QUERYDRAGICON()
 ON_WM_SIZE()
+ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 // CD2DDemoDlg 消息处理程序
@@ -90,8 +91,9 @@ BOOL CD2DDemoDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE); // 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-	m_D2DRender.Init(m_hWnd);
 	ModifyStyle(0, WS_CLIPCHILDREN);
+	SetTimer(2000, 33, nullptr);
+	m_D2DRender.Init(m_hWnd);
 
 	return TRUE; // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -129,4 +131,12 @@ void CD2DDemoDlg::OnSize(UINT nType, int cx, int cy)
 
 	// TODO: 在此处添加消息处理程序代码
 	RedrawWindow();
+}
+
+void CD2DDemoDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	Invalidate(FALSE);
+
+	CDialogEx::OnTimer(nIDEvent);
 }

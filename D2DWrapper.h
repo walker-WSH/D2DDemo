@@ -28,8 +28,7 @@ https://learn.microsoft.com/zh-cn/windows/win32/api/dwrite/nn-dwrite-idwritetext
 */
 
 static const WCHAR msc_fontName[] = L"Arial";
-static const FLOAT msc_fontSize = 50;
-static const WCHAR sc_helloWorld[] = L"123456 Hello, World! ´ó¼ÒºÃÂð£¿ how are you? good morningggggg";
+static const FLOAT msc_fontSize = 20;
 
 class D2DWrapper {
 public:
