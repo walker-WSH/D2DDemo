@@ -28,7 +28,7 @@ https://learn.microsoft.com/zh-cn/windows/win32/api/dwrite/nn-dwrite-idwritetext
 */
 
 static const WCHAR msc_fontName[] = L"Arial";
-static const FLOAT msc_fontSize = 20;
+static const FLOAT msc_fontSize = 15;
 
 class D2DWrapper {
 public:
