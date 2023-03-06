@@ -130,31 +130,47 @@ void D2DWrapper::Render(HWND hWnd)
 	// 画圆
 	m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(150.0f, 150.0f), 100.0f, 100.0f), m_pRedBrush, 3.0);
 
+	// 画网格线条 性能很高！
+	D2D1_POINT_2F pos1;
+	D2D1_POINT_2F pos2;
+	for (auto i = 0; i < rc.right; i += 160) {
+		pos1.y = 0.f;
+		pos2.y = (float)rc.bottom;
+		pos1.x = pos2.x = float(i);
+		m_pRenderTarget->DrawLine(pos1, pos2, m_pRedBrush, 4.0);
+	}
+	for (auto i = 0; i < rc.bottom; i += 90) {
+		pos1.x = 0.f;
+		pos2.x = (float)rc.right;
+		pos1.y = pos2.y = float(i);
+		m_pRenderTarget->DrawLine(pos1, pos2, m_pRedBrush, 4.0);
+	}
+
 	// 统计渲染fps
-	static DWORD startTime = GetTickCount();
-	static DWORD renderCount = 0;
-	static float fps = 0.f;
+	static DWORD64 startTime = GetTickCount();
+	static DWORD64 renderCount = 0;
+	static double fps = 0.f;
 	++renderCount;
-	DWORD crtTime = GetTickCount();
+	DWORD64 crtTime = GetTickCount64();
 	if (crtTime - startTime >= 3000) {
-		fps = float(renderCount) * 1000 / float(crtTime - startTime);
+		fps = double(renderCount) * 1000 / double(crtTime - startTime);
 		renderCount = 1;
 		startTime = crtTime;
 	}
 
 	WCHAR time[200];
-	swprintf_s(time, 200, L"render text \n\t %.2ffps  %us : %ums  \n\n", fps, crtTime / 1000, crtTime % 1000);
+	swprintf_s(time, 200, L"render text \n\t %llu(FPS)  %llus : %llums  \n\n", (DWORD64)fps, crtTime / 1000, crtTime % 1000);
 	std::wstring str = std::wstring(time) + wstrText;
 	// 渲染文本
 	if (0) {
 		D2D1_SIZE_F size = m_pRenderTarget->GetSize();
-		m_pRenderTarget->DrawText(str.c_str(), str.size(), m_pTextFormat, D2D1::RectF(0, 0, size.width, size.height), m_pRedBrush);
+		m_pRenderTarget->DrawText(str.c_str(), (UINT32)str.size(), m_pTextFormat, D2D1::RectF(0, 0, size.width, size.height), m_pRedBrush);
 	} else {
 		// 只要IDWriteTextLayout的宽高区域发生了变化 就需要重新创建IDWriteTextLayout对象
 		// 否则渲染出来的文本 不能自适应宽高
 		// 另外注意 当创建的宽高大于窗口实际宽高时 有时候没有文本被渲染出来 没搞清原因
 		ComPtr<IDWriteTextLayout> pTextLayout = nullptr;
-		HRESULT hr = m_pDWriteFactory->CreateTextLayout(str.c_str(), str.size(), m_pTextFormat,
+		HRESULT hr = m_pDWriteFactory->CreateTextLayout(str.c_str(), (UINT32)str.size(), m_pTextFormat,
 								float(rc.right - rc.left), // maxWidth
 								float(rc.bottom - rc.top), // maxHeight
 								&pTextLayout);
