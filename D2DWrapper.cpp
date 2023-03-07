@@ -63,18 +63,21 @@ bool D2DWrapper::Init(HWND hWnd)
 		// 即使宽度不够 也不换行 （多出的区域将被裁剪）
 		m_pTextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);
 
-		IDWriteInlineObject *pEllipsis = NULL;
-		hr = m_pDWriteFactory->CreateEllipsisTrimmingSign(m_pTextFormat, &pEllipsis); // 省略号
+		hr = m_pDWriteFactory->CreateEllipsisTrimmingSign(m_pTextFormat, m_pTextCutShow.Assign()); // 省略号
 		if (SUCCEEDED(hr)) {
 			const DWRITE_TRIMMING sc_trimming = {DWRITE_TRIMMING_GRANULARITY_CHARACTER, 0, 0};
-			m_pTextFormat->SetTrimming(&sc_trimming, pEllipsis); // 当超出边界时 显示省略号
-			pEllipsis->Release();                                // 此处即使release了，后续m_pTextFormat一样可以生效
+			m_pTextFormat->SetTrimming(&sc_trimming, m_pTextCutShow); // 当超出边界时 显示省略号
 		}
 	}
 
 	//---------------------------------------------------------------------------------
 	D2D1_SIZE_U size = D2D1::SizeU(rc.right, rc.bottom);
 	hr = m_pFactory->CreateHwndRenderTarget(D2D1::RenderTargetProperties(), D2D1::HwndRenderTargetProperties(hWnd, size), m_pRenderTarget.Assign());
+	assert(SUCCEEDED(hr));
+	if (FAILED(hr))
+		return false;
+
+	hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 0, 1.f, 0.5f), m_pBlueAlpha.Assign());
 	assert(SUCCEEDED(hr));
 	if (FAILED(hr))
 		return false;
@@ -102,11 +105,13 @@ void D2DWrapper::Uninit()
 {
 	m_pRedBrush = nullptr;
 	m_pBlackBrush = nullptr;
+	m_pBlueAlpha = nullptr;
 	m_pRenderTarget = nullptr;
-	m_pFactory = nullptr;
 
+	m_pTextCutShow = nullptr;
 	m_pTextFormat = nullptr;
 	m_pDWriteFactory = nullptr;
+	m_pFactory = nullptr;
 }
 
 static DWORD64 crtTime;
@@ -185,6 +190,24 @@ void D2DWrapper::Render(HWND hWnd)
 		pos1.y = pos2.y = float(i);
 		m_pRenderTarget->DrawLine(pos1, pos2, m_pRedBrush, 1);
 	}
+
+	// 画直角矩形
+	D2D1_RECT_F rcDraw;
+	rcDraw.left = 350;
+	rcDraw.top = 100;
+	rcDraw.right = rcDraw.left + 500;
+	rcDraw.bottom = rcDraw.top + 350;
+	m_pRenderTarget->DrawRectangle(rcDraw, m_pBlueAlpha, 5.f); // 指定矩阵边框厚度时，线框画面的厚度是向外测扩张的
+
+	// 填充圆角矩形
+	D2D1_ROUNDED_RECT rcFill;
+	rcFill.rect.left = 300;
+	rcFill.rect.top = 500;
+	rcFill.rect.right = rcFill.rect.left + 200;
+	rcFill.rect.bottom = rcFill.rect.top + 200;
+	rcFill.radiusX = 10;
+	rcFill.radiusY = 10;
+	m_pRenderTarget->FillRoundedRectangle(rcFill, m_pBlueAlpha);
 
 	// 渲染文本
 	std::wstring str = getText();
