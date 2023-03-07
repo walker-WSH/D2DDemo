@@ -34,11 +34,8 @@ bool D2DWrapper::Init(HWND hWnd)
 
 	Uninit();
 
-	RECT rc;
-	GetClientRect(hWnd, &rc);
-
 	//---------------------------------------------------- common ----------------------------------------------------------
-	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &m_pFactory);
+	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &m_pD2DFactory);
 	assert(SUCCEEDED(hr));
 	if (FAILED(hr))
 		return false;
@@ -78,8 +75,11 @@ bool D2DWrapper::Init(HWND hWnd)
 	}
 
 	//---------------------------------------------------------------------------------
+	RECT rc;
+	GetClientRect(hWnd, &rc);
+
 	D2D1_SIZE_U size = D2D1::SizeU(rc.right, rc.bottom);
-	hr = m_pFactory->CreateHwndRenderTarget(D2D1::RenderTargetProperties(), D2D1::HwndRenderTargetProperties(hWnd, size), m_pRenderTarget.Assign());
+	hr = m_pD2DFactory->CreateHwndRenderTarget(D2D1::RenderTargetProperties(), D2D1::HwndRenderTargetProperties(hWnd, size), m_pRenderTarget.Assign());
 	assert(SUCCEEDED(hr));
 	if (FAILED(hr))
 		return false;
@@ -118,7 +118,7 @@ void D2DWrapper::Uninit()
 	m_pTextCutShow = nullptr;
 	m_pTextFormat = nullptr;
 	m_pDWriteFactory = nullptr;
-	m_pFactory = nullptr;
+	m_pD2DFactory = nullptr;
 }
 
 static DWORD64 crtTime;

@@ -40,10 +40,12 @@ public:
 
 private:
 	// common object
-	ComPtr<ID2D1Factory> m_pFactory = nullptr;
+	ComPtr<ID2D1Factory> m_pD2DFactory = nullptr;
 	ComPtr<IDWriteFactory> m_pDWriteFactory = nullptr;
+
+	// common object
 	ComPtr<IDWriteTextFormat> m_pTextFormat = nullptr;
-	ComPtr<IDWriteInlineObject> m_pTextCutShow = NULL;
+	ComPtr<IDWriteInlineObject> m_pTextCutShow = nullptr;
 
 	ComPtr<ID2D1HwndRenderTarget> m_pRenderTarget = nullptr;
 	ComPtr<ID2D1SolidColorBrush> m_pRedBrush = nullptr;
