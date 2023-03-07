@@ -177,7 +177,7 @@ void D2DWrapper::Render(HWND hWnd)
 	m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
 
 	// Ìî³äÍÖÔ²
-	m_pRenderTarget->FillEllipse(ellipse, m_pBlackBrush);
+	m_pRenderTarget->FillEllipse(ellipse, m_pBlueAlpha);
 
 	// »­Ô²
 	m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(150.0f, 150.0f), 100.0f, 100.0f), m_pRedBrush, 3.0);
