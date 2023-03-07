@@ -27,8 +27,8 @@ https://learn.microsoft.com/zh-cn/windows/win32/api/dwrite/nn-dwrite-idwritetext
 ÍâÂÖÀª(ÎÄ×ÖÃè±ß)https://codeantenna.com/a/bsKMXrctOX
 */
 
-static const WCHAR msc_fontName[] = L"Arial";
-static const FLOAT msc_fontSize = 15;
+static const WCHAR FONT_NAME[] = L"Arial";
+static const FLOAT FONT_SIZE = 15;
 
 class D2DWrapper {
 public:
@@ -40,11 +40,12 @@ public:
 	void Render(HWND hWnd);
 
 private:
+	// common object
 	ComPtr<ID2D1Factory> m_pFactory = nullptr;
+	ComPtr<IDWriteFactory> m_pDWriteFactory = nullptr;
+	ComPtr<IDWriteTextFormat> m_pTextFormat = nullptr;
+
 	ComPtr<ID2D1HwndRenderTarget> m_pRenderTarget = nullptr;
 	ComPtr<ID2D1SolidColorBrush> m_pRedBrush = nullptr;
 	ComPtr<ID2D1SolidColorBrush> m_pBlackBrush = nullptr;
-
-	ComPtr<IDWriteFactory> m_pDWriteFactory = nullptr;
-	ComPtr<IDWriteTextFormat> m_pTextFormat = nullptr;
 };
