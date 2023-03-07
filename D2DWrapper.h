@@ -27,7 +27,6 @@ https://learn.microsoft.com/zh-cn/windows/win32/api/dwrite/nn-dwrite-idwritetext
 ÍâÂÖÀª(ÎÄ×ÖÃè±ß)https://codeantenna.com/a/bsKMXrctOX
 */
 
-static const WCHAR FONT_NAME[] = L"Arial";
 static const FLOAT FONT_SIZE = 15;
 
 class D2DWrapper {

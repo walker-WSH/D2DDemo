@@ -8,11 +8,11 @@
 std::wstring wstrText =
 	L"teshi demo Meta 首席执行官马克扎克伯格裁员 11,000 人，占Facebook的逊已确认计划削减多达 10,000 个公司和技术 wang test zhi dao hhhhhhhahahaha 职位。来福车。罗宾汉。条纹。网飞。币库。他们都在裁员。"
 	L"他们不仅仅是在裁员——他们还取消了一些已经成为科技工作代名词的津贴。\n\n"
-	L"每家公司都有自己独特的问题来推动削减成本的措施。但收缩也有几个宏观原因。首先，科技公司是大流行病的赢家。当消费者被困在家里参加 Zoom 会议、Peloton "
+	L"\t每家公司都有自己独特的问题来推动削减成本的措施。但收缩也有几个宏观原因。首先，科技公司是大流行病的赢家。当消费者被困在家里参加 Zoom 会议、Peloton "
 	L"骑行和观看 Netflix 时，科技公司的股票就会上涨。他们获得了大量现金注入并用它来扩张——很多，有时是在风险越来越大的垂直领域。但随着经济恶化和通胀上升"
 	L"骑行和观看 Netflix 时，科技公司的股票就会上涨。他们获得了大量现金注入并用它来扩张——很多，有时是在风险越来越大的垂直领域。但随着经济恶化和通胀上升"
 	L"而大流行限制放松，投资者正在寻找更安全的赌注，科技公司正在回归地球。因此勒紧裤腰带。\n\n"
-	L"削减成本的另一个宏观原因，正如 Recode 的 Peter Kafka 在Today, Explained中所说的那样，是最大的科技公司现在已经成熟。换句话说，它们无法为投资者提供"
+	L"\t削减成本的另一个宏观原因，正如 Recode 的 Peter Kafka 在Today, Explained中所说的那样，是最大的科技公司现在已经成熟。换句话说，它们无法为投资者提供"
 	L"与 2000 年代后期和 2010 年代繁荣时期相同的大规模增长。这将对该行业的参与者产生各种影响。\n\n"
 	L"以下是对话的摘录，为篇幅和清晰度进行了编辑。完整播客中还有更多内容，因此请收听Today, Explained无论您在何处获得播客，包括Apple Podcasts、Google "
 	L"Podcasts、Spotify和Stitcher。";
@@ -24,6 +24,14 @@ D2DWrapper::~D2DWrapper()
 
 bool D2DWrapper::Init(HWND hWnd)
 {
+	HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
+	LOGFONT info = {};
+	if (GetObject(hFont, sizeof(LOGFONT), &info) != 0) {
+		OutputDebugStringA("=============== font : ");
+		OutputDebugStringW(info.lfFaceName);
+		OutputDebugStringA(" =============== \n ");
+	}
+
 	Uninit();
 
 	RECT rc;
@@ -41,7 +49,7 @@ bool D2DWrapper::Init(HWND hWnd)
 		return false;
 
 	//---------------------------------------------------- common for text style ----------------------------------------------------------
-	hr = m_pDWriteFactory->CreateTextFormat(FONT_NAME, NULL,
+	hr = m_pDWriteFactory->CreateTextFormat(info.lfFaceName, NULL,
 						DWRITE_FONT_WEIGHT_NORMAL,          // 加粗
 						DWRITE_FONT_STYLE_NORMAL,           // 是否斜体
 						DWRITE_FONT_STRETCH_EXTRA_EXPANDED, // 水平方向文本间距
@@ -50,12 +58,11 @@ bool D2DWrapper::Init(HWND hWnd)
 	if (FAILED(hr))
 		return false;
 
-	m_pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);          // 文本水平对齐
-	m_pTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER); // 文本垂直对齐
+	m_pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);                // 文本水平对齐
+	m_pTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);       // 文本垂直对齐
+	m_pTextFormat->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 20.f, 4.0f); // 设置文本行间距
 
-	m_pTextFormat->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 20.f, 4.0f);
-
-	if (0) {
+	if (1) {
 		// 宽度不够时 自动换行 （DWRITE_WORD_WRAPPING_WHOLE_WORD）能保证以单词为单位换行
 		// 另一个枚举值（DWRITE_WORD_WRAPPING_WRAP）不能保证是整个单位为单位进行换行
 		m_pTextFormat->SetWordWrapping(DWRITE_WORD_WRAPPING_WRAP);
