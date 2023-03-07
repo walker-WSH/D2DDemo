@@ -6,7 +6,7 @@
 #pragma comment(lib, "dwrite.lib")
 
 std::wstring wstrText =
-	L"wangshaohui Meta 首席执行官马克扎克伯格裁员 11,000 人，占Facebook的逊已确认计划削减多达 10,000 个公司和技术 wang test zhi dao hhhhhhhahahaha 职位。来福车。罗宾汉。条纹。网飞。币库。他们都在裁员。"
+	L"teshi demo Meta 首席执行官马克扎克伯格裁员 11,000 人，占Facebook的逊已确认计划削减多达 10,000 个公司和技术 wang test zhi dao hhhhhhhahahaha 职位。来福车。罗宾汉。条纹。网飞。币库。他们都在裁员。"
 	L"他们不仅仅是在裁员——他们还取消了一些已经成为科技工作代名词的津贴。\n\n"
 	L"每家公司都有自己独特的问题来推动削减成本的措施。但收缩也有几个宏观原因。首先，科技公司是大流行病的赢家。当消费者被困在家里参加 Zoom 会议、Peloton "
 	L"骑行和观看 Netflix 时，科技公司的股票就会上涨。他们获得了大量现金注入并用它来扩张——很多，有时是在风险越来越大的垂直领域。但随着经济恶化和通胀上升"
@@ -177,13 +177,13 @@ void D2DWrapper::Render(HWND hWnd)
 		pos1.y = 0.f;
 		pos2.y = (float)rc.bottom;
 		pos1.x = pos2.x = float(i);
-		m_pRenderTarget->DrawLine(pos1, pos2, m_pRedBrush, 10.0);
+		m_pRenderTarget->DrawLine(pos1, pos2, m_pRedBrush, 1);
 	}
 	for (auto i = 0; i < rc.bottom; i += 90) {
 		pos1.x = 0.f;
 		pos2.x = (float)rc.right;
 		pos1.y = pos2.y = float(i);
-		m_pRenderTarget->DrawLine(pos1, pos2, m_pRedBrush, 10.0);
+		m_pRenderTarget->DrawLine(pos1, pos2, m_pRedBrush, 1);
 	}
 
 	// 渲染文本
